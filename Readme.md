@@ -12,7 +12,7 @@ The photocurrent response of the device under varying light intensity, motion di
 
 ## Network
 
-The model consists of four convolutional layers with pooling (Conv 1–Conv 4), followed by an LSTM and an attention mechanism for temporal feature extraction. A ReLU with Dropout layer and a classification head are applied to generate outputs corresponding to light intensity, motion speed, and direction.
+The single-pixel classifier uses a lightweight multitask multilayer perceptron (MLP). Each sample is one rising or falling segment of a measured photocurrent waveform. After Daubechies-5 (db5) wavelet denoising, longer segments are linearly resampled to 100 points and shorter segments are zero-padded to that length. The 100 normalized waveform points, together with the pre-normalization mean and standard deviation, form a 102-dimensional input. Each feature is then standardized using training-set statistics. The MLP has two shared fully connected layers with 64 and 32 units, each followed by ReLU, with dropout of 0.1 after the first layer. Three linear output heads classify motion direction (7 classes), scan speed (5 classes), and light intensity (3 classes).
 
 <p align="center">
   <img src="functions/network.png" width="650">
